@@ -1,5 +1,7 @@
 package cl.ucn.disc.isof.fivet.domain.service.ebean;
 
+import cl.ucn.disc.isof.fivet.domain.model.Control;
+import cl.ucn.disc.isof.fivet.domain.model.Examen;
 import cl.ucn.disc.isof.fivet.domain.model.Paciente;
 import cl.ucn.disc.isof.fivet.domain.model.Persona;
 import cl.ucn.disc.isof.fivet.domain.service.BackendService;
@@ -10,6 +12,8 @@ import com.avaje.ebean.config.EncryptKeyManager;
 import com.avaje.ebean.config.ServerConfig;
 import com.durrutia.ebean.BaseModel;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @Slf4j
 public class EbeanBackendService implements BackendService {
@@ -39,7 +43,8 @@ public class EbeanBackendService implements BackendService {
 
         // config.addPackage("package.de.la.clase.a.agregar.en.el.modelo");
         config.addClass(BaseModel.class);
-
+        config.addClass(Control.class);
+        config.addClass(Examen.class);
         config.addClass(Persona.class);
         config.addClass(Persona.Tipo.class);
 
@@ -76,7 +81,7 @@ public class EbeanBackendService implements BackendService {
 
     /**
      * @param rut
-     * @return the Persona
+     * @return Persona
      */
     @Override
     public Persona getPersona(String rut) {
@@ -85,6 +90,50 @@ public class EbeanBackendService implements BackendService {
                 .eq("rut", rut)
                 .findUnique();
     }
+
+    /**
+     * @param numeroFicha
+     * @return Paciente
+     */
+    @Override
+    public Paciente getPaciente(Integer numeroFicha) {
+        return this.ebeanServer.find(Paciente.class)
+                .where()
+                .eq("numero",numeroFicha)
+                .findUnique();
+    }
+
+    /**
+     * Obtiene un control mediante un identificador
+     * @param identificador
+     * @return Control
+     */
+    @Override
+    public Control getControl(String identificador) {
+
+        return this.ebeanServer.find(Control.class)
+                .where()
+                .eq("identificador", identificador)
+                .findUnique();
+    }
+
+    /**
+     * Agrega un control al paciente
+     * @param control
+     * @param numeroFicha
+     */
+    @Override
+    public void addControlPaciente(Control control, Integer numeroFicha) {
+
+        Paciente paciente = this.getPaciente(numeroFicha);
+        List<Control> listControles = paciente.getControles();
+        listControles.add(control);
+        paciente.update();
+
+    }
+
+
+
 
     /**
      * Inicializa la base de datos

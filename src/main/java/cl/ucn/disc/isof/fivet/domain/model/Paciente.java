@@ -3,11 +3,9 @@ package cl.ucn.disc.isof.fivet.domain.model;
 import com.avaje.ebean.annotation.EnumValue;
 import com.durrutia.ebean.BaseModel;
 import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Clase que representa a un Paciente de la veterinaria.
@@ -56,6 +54,9 @@ public class Paciente extends BaseModel {
     /**
      * Sexo
      */
+    @Getter
+    @Setter
+    @Column
     private Sexo sexo;
 
     /**
@@ -63,8 +64,18 @@ public class Paciente extends BaseModel {
      */
     @Getter
     @Setter
+    @Column
     private String color;
 
+
+    /**
+     * Lista de controles del paciente
+     */
+    @Getter
+    @Setter
+    @Column
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Control> controles;
     /**
      * Sexo?
      */

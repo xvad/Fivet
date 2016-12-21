@@ -1,5 +1,7 @@
 package cl.ucn.disc.isof.fivet.domain.service;
 
+import cl.ucn.disc.isof.fivet.domain.model.Control;
+import cl.ucn.disc.isof.fivet.domain.model.Paciente;
 import cl.ucn.disc.isof.fivet.domain.model.Persona;
 
 /**
@@ -15,6 +17,24 @@ public interface BackendService {
      */
     Persona getPersona(final String rut);
 
+    /**
+     * Obtiene un paciente desde el backend dado su numero de ficha.
+     *
+     * @param numeroFicha
+     * @return el paciente
+     */
+    Paciente getPaciente(Integer numeroFicha);
+
+    /**
+     * Obtiene un control mediante le identificador de este
+     */
+
+    Control getControl(String identificador);
+
+    /**
+     * Agrega un control al paciente
+     */
+    void addControlPaciente(final Control control, final Integer numeroFicha);
     /**
      * Inicializa el backend.
      */
